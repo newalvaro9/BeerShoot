@@ -2,8 +2,7 @@ require('./database/database')
 const express = require('express');
 const path = require('path')
 const exphbs = require('express-handlebars')
-const bodyParser = require('body-parser');
-const fileupload = require("express-fileupload");
+
 const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -52,9 +51,7 @@ app.engine('.hbs', exphbs({
 
 
 // Middlwares
-app.use(fileupload());
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+
 app.use(methodOverride('_method'))
 app.use(session({
     secret: 'mysecretapp',
@@ -69,22 +66,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(cors({
-  origin: 'http://localhost:3000/'
-}))
-app.use(serveStatic(path.join(__dirname, 'public')))
 
-// Routes Dir
-const homeRoute = require('./routes/home')
-const loginRoute = require('./routes/auth')
-const imagesRoute = require('./routes/images')
-
-// Routes
-app.use('/', homeRoute)
-app.use('/auth', loginRoute)
-app.use('/images', imagesRoute)
-
-app.get("*", (req, res) => { res.render('404', {titulo: "404 | Pro Code"}) });
 // Static Files
 
 

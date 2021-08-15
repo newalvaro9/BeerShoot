@@ -1,5 +1,9 @@
 <h1>si</h1>
 <form action="/upload" method="POST">
-    <input name="imagen" type="file" accept="image/*">
-    <input type="submit">
+    <div class="form-group">
+        <label for="imageTitle">Título de la imagen</label>
+        <input type="text" class="form-control" id="imageTitle" name="imageTitle">
+    </div>
+        <input type="file" id="imagen" name="imagen">
+        <button type="submit" class="btn btn-primary mb-2">Send Image</button> 
 </form>

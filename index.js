@@ -2,6 +2,10 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const app = express();
 const path = require("path")
+const serveStatic = require('serve-static')
+const bodyParser = require('body-parser');
+const fileupload = require("express-fileupload");
+const cors = require('cors')
 require("./database/database")
 
 
@@ -10,21 +14,28 @@ app.engine('hbs', exphbs({
     defaultLayout: 'main',
     extname: '.hbs'
 }));
+
 // Setting template Engine
 app.set('view engine', 'hbs');
-app.use(express.urlencoded({ limit: '50mb', extended: false}));
-app.use(express.json({ limit: '50mb' }))
+app.use(fileupload());
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
-// Static Files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({
+    origin: 'http://localhost:3000/'
+}))
 
-// routes
-const mainRoute = require("./routes/index")
-const uploadRoute = require("./routes/upload")
+app.use(serveStatic(path.join(__dirname, 'public')))
+  
+// Routes Dir
+const homeRoute = require('./routes/home')
 
+  
+// Routes
+app.use('/', homeRoute)
 
-app.use('/', mainRoute)
-app.use('/upload', uploadRoute)
+  
+
 
 
 // port where app is served
